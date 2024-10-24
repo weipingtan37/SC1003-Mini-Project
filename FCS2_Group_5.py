@@ -22,3 +22,4 @@ with open('records.csv', 'r') as records:
                 return 'Low'
         for student in STUDENTS_LIST:
             student['CGPA Group'] = cgpa_groups(student['CGPA']) #gangster1234567
+#hi
