@@ -157,18 +157,23 @@ with open('records.csv', 'r') as records:
                                 
 
         #testing out code   
-        groups_that_need_member_switch = check_the_same_school()
-        check_balance('School')
-        print(groups_that_need_member_switch)
-        print()
-        print("After swapping: ")
-        print() 
-        check_balance('School')
-        print() 
-        check_balance('CGPA')
-        print()
-        check_balance('Gender')
-        print()
+        check_the_same_school()
+        n = 1
+        for Group in temp_list:
+            for member in Group:
+                member['Group Number'] = n
+            n += 1
+        #check_balance('School')
+        #print(groups_that_need_member_switch)
+        #print()
+        #print("After swapping: ")
+        #print() 
+        #check_balance('School')
+        #print() 
+        #check_balance('CGPA')
+        #print()
+        #check_balance('Gender')
+        #print()
 
     
     #can use if change plan
@@ -184,4 +189,12 @@ with open('records.csv', 'r') as records:
         #         return 'Low'
         # for student in STUDENTS_LIST:
         #     student['CGPA Group'] = cgpa_groups(student['CGPA'])
+
+with open('new.record.csv', 'w') as new_record:
+    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Group Number\n")
+    for individual_tutorial in tutorial_ordered_list:
+        for individual_member in individual_tutorial:
+            new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Group Number']}\n")
+            
+    
     
