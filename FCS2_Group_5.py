@@ -114,46 +114,54 @@ with open('records.csv', 'r') as records:
                         Imbalance_case.append(school_of_each_group[group])        
                         #swap begins here
                         for target_group in range(10): #iterate through school_of_each_group
-                            for target_member, target_school in enumerate(school_of_each_group[target_group]):
-                                if target_school != school: #ensure sch swapped is diff
-                                    # swap a member from the imbalanced group with the target group
-                                    need_repeat = True 
-                                    for member, member_school in enumerate(school_of_each_group[group]):#iterate thru problem grp till we find the sch to swap
-                                        if need_repeat == False:
-                                            break
-                                        if member_school == school and temp_list[target_group][target_member]['Gender'] == temp_list[group][member]['Gender']:
+                            if target_group != group:
+                                for target_member, target_school in enumerate(school_of_each_group[target_group]):
+                                    if target_school != school: #ensure sch swapped is diff
+                                        # swap a member from the imbalanced group with the target group
+                                        need_repeat = True 
+                                        for member, member_school in enumerate(school_of_each_group[group]):#iterate thru problem grp till we find the sch to swap
+                                            if need_repeat == False:
+                                                break
+                                            if member_school == school and temp_list[target_group][target_member]['Gender'] == temp_list[group][member]['Gender']:
+                                                # Swap the students between groups
+                                                temp_list[group][member], temp_list[target_group][target_member] = temp_list[target_group][target_member], temp_list[group][member]
 
-                                            # Swap the students between groups
-                                            temp_list[group][member], temp_list[target_group][target_member] = temp_list[target_group][target_member], temp_list[group][member]
+                                                # Update school_of_each_group to reflect the swap
+                                                school_of_each_group[group][member], school_of_each_group[target_group][target_member] = school_of_each_group[target_group][target_member], school_of_each_group[group][member]
+                                                school_counts[school] -= 1    
+                                                need_repeat = False
+                                                                                    
+                                                #check if both swapped is fine 
+                                                grouping = [target_group, group]
+                                                for diff_group in grouping:
+                                                    if need_repeat == True:
+                                                        break
+                                                    school_target_count = {}
+                                                    for schools in school_of_each_group[diff_group]:
+                                                        if schools in school_target_count:
+                                                            school_target_count[schools] += 1
+                                                        else:
+                                                            school_target_count[schools] = 1
+                                                    # use this print(school_target_count)
+                                                    #print(f"Group {group} counts:", school_counts) #for debugging
+                                                    for schools, counts in school_target_count.items():
+                                                        if counts >= 3 and schools == school and diff_group == group: 
+                                                            need_repeat = True
+                                                            break
+                                                        elif counts >= 3: #if inbalanced we swap
+                                                            temp_list[target_group][target_member], temp_list[group][member] = temp_list[group][member], temp_list[target_group][target_member]
+                                                            school_of_each_group[target_group][target_member], school_of_each_group[group][member] =  school_of_each_group[group][member], school_of_each_group[target_group][target_member]
+                                                            school_counts[school] += 1
+                                                            need_repeat = True 
+                                                
+                                                # Break after swap to avoid multiple swaps at once
+                                                break
+                                            # Check if imbalance is resolved after each swap\
 
-                                            # Update school_of_each_group to reflect the swap
-                                            school_of_each_group[group][member], school_of_each_group[target_group][target_member] = school_of_each_group[target_group][target_member], school_of_each_group[group][member]
-                                            school_counts[school] -= 1    
-                                            need_repeat = False
-                                                                            
-                                            #check if both swapped is fine 
-                                            school_target_count = {}
-                                            for schools in school_of_each_group[target_group]:
-                                                if schools in school_target_count:
-                                                    school_target_count[schools] += 1
-                                                else:
-                                                    school_target_count[schools] = 1
-                                            #print(f"Group {group} counts:", school_counts) #for debugging
-                                            for schools, counts in school_target_count.items():
-                                                if counts >= 3: #if inbalanced we swap
-                                                    temp_list[target_group][target_member], temp_list[group][member] = temp_list[group][member], temp_list[target_group][target_member]
-                                                    school_of_each_group[target_group][target_member], school_of_each_group[group][member] =  school_of_each_group[group][member], school_of_each_group[target_group][target_member]
-                                                    school_counts[school] += 1
-                                                    need_repeat = True 
-                                            
-                                            # Break after swap to avoid multiple swaps at once
-                                            break
-                                        # Check if imbalance is resolved after each swap\
-
+                                    if school_counts[school] < 3:
+                                        break #break inner loop 
                                 if school_counts[school] < 3:
-                                    break #break inner loop 
-                            if school_counts[school] < 3:
-                                break #break outer loop
+                                    break #break outer loop
                                 
 
         #testing out code   
@@ -163,6 +171,7 @@ with open('records.csv', 'r') as records:
             for member in Group:
                 member['Group Number'] = n
             n += 1
+        #check_balance('School')
         #check_balance('School')
         #print(groups_that_need_member_switch)
         #print()
@@ -196,5 +205,4 @@ with open('new.record.csv', 'w') as new_record:
         for individual_member in individual_tutorial:
             new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Group Number']}\n")
             
-    
     
