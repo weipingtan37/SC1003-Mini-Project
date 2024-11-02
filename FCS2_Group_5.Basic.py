@@ -200,7 +200,7 @@ with open('records.csv', 'r') as records:
         #     student['CGPA Group'] = cgpa_groups(student['CGPA'])
 
 with open('new.record.csv', 'w') as new_record:
-    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Group Number\n")
+    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Team Number\n")
     for individual_tutorial in tutorial_ordered_list:
         for individual_member in individual_tutorial:
             new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Group Number']}\n")
