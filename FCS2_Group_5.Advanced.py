@@ -83,7 +83,7 @@ for tutorial in range(120):
     
     
     
-    #This function is only used to visualize the students grouping
+    ''''This function is only used to visualize the students grouping'''
     def check_balance(category):
         if category == 'CGPA':
             for group in range(number_of_groups):
