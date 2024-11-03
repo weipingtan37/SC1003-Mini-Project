@@ -167,9 +167,9 @@ with open('records.csv', 'r') as records:
         #testing out code   
         check_the_same_school()
         n = 1
-        for Group in temp_list:
-            for member in Group:
-                member['Group Number'] = n
+        for Team in temp_list:
+            for member in Team:
+                member['Team Number'] = n
             n += 1
         #check_balance('School')
         #check_balance('School')
@@ -200,9 +200,9 @@ with open('records.csv', 'r') as records:
         #     student['CGPA Group'] = cgpa_groups(student['CGPA'])
 
 with open('new.record.csv', 'w') as new_record:
-    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Group Number\n")
+    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Team Number\n")
     for individual_tutorial in tutorial_ordered_list:
         for individual_member in individual_tutorial:
-            new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Group Number']}\n")
+            new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Team Number']}\n")
             
     
