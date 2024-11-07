@@ -135,7 +135,7 @@ with open('records.csv', 'r') as records:
 
     #this should be used to check the balance in the grouping
     #Since we already sorted the list based on CGPA and Gender, I believe most of the groups will only have problems for school?
-    def check_the_same_school(): #MIGHT HAVE TO CHANGE FUNC NAME TO RECTIFY_SCHOOL_INBALANCE()
+    def rectify_school_imbalance(): #MIGHT HAVE TO CHANGE FUNC NAME TO RECTIFY_SCHOOL_INBALANCE()
         Imbalance_case = []
         school_of_each_group = [[], [], [], [], [], [], [], [], [], []]
         for group in range(10):
@@ -252,7 +252,7 @@ for individual_tutorial in tutorial_ordered_list: #can slice the ordered list he
         for person in range(5):
             temp_list[group].append(grouping_list[person][group]) 
 
-    check_the_same_school()
+    rectify_school_imbalance()
     n = 1
     for Team in temp_list:
         for member in Team:
