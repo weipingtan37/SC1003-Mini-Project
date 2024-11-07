@@ -107,7 +107,7 @@ for tutorial in range(120):
 
     #this should be used to check the balance in the grouping
         #Since we already sorted the list based on CGPA and Gender, I believe most of the groups will only have problems for school?
-    def check_the_same_school(): #MIGHT HAVE TO CHANGE FUNC NAME TO RECTIFY_SCHOOL_INBALANCE()
+    def rectify_school_imbalance(): #MIGHT HAVE TO CHANGE FUNC NAME TO RECTIFY_SCHOOL_INBALANCE()
         Imbalance_case = []
         school_of_each_group = [[] for n in range(number_of_groups)]
         for group in range(number_of_groups):
@@ -180,7 +180,7 @@ for tutorial in range(120):
                             
 
     '''Test out the code'''   
-    check_the_same_school()
+    rectify_school_imbalance()
 
 
     '''   slotting extra member in again   '''
