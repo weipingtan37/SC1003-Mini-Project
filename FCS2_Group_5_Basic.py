@@ -1,3 +1,8 @@
+import matplotlib.pyplot as plt
+import statistics
+
+total_list=[]
+
 '''     APPENDING INFO FROM CSV     '''
 # Initialize Global Variable STUDENTS_LIST and append the information from the CSV File 
 STUDENTS_LIST = []
@@ -40,29 +45,29 @@ with open('records.csv', 'r') as records:
 
 
     def merge(left_list, right_list, key):
-        temp_list=[] #temp list that stores sorted items
+        sorted_list=[] #temp list that stores sorted items
 
 
         while left_list and right_list: #while both arr are not empty
             if key(left_list[0]) <= key(right_list[0]): # if key of the 1st element in left arr is less than that of right arr
-                temp_list.append(left_list[0]) #append to temp_list
+                sorted_list.append(left_list[0]) #append to sorted_list
                 left_list.pop(0) #remove this appended item
             else:
-                temp_list.append(right_list[0])
+                sorted_list.append(right_list[0])
                 right_list.pop(0)
 
 
-        if left_list: #if there is still elements in one of the arr, extend them to temp_list since the remaining elements are alr sorted
-            temp_list.extend(left_list)
+        if left_list: #if there is still elements in one of the arr, extend them to sorted_list since the remaining elements are alr sorted
+            sorted_list.extend(left_list)
 
 
         if right_list:
-            temp_list.extend(right_list)
+            sorted_list.extend(right_list)
 
 
-        return temp_list #return the sorted list to merge_sort
+        return sorted_list #return the sorted list to merge_sort
        
-    '''
+    ''' 
     def cgpa_groups(student):
         return student["CGPA"]
     sorted_individual_tutorial=merge_sort(tutorial_ordered_list[0], key=cgpa_groups)
@@ -71,8 +76,8 @@ with open('records.csv', 'r') as records:
     def gender_groups(student):
             return student["Gender"]
     sorted_individual_tutorial.sort(key=gender_groups)
-    print(sorted_individual_tutorial)''' #i wanna see if the sort is correct
-
+    print(sorted_individual_tutorial) #i wanna see if the sort is correct
+                                                                            '''
 
 
 
@@ -130,7 +135,17 @@ with open('records.csv', 'r') as records:
     print()
     check_balance('CGPA')
     '''
-    
+    def get_list_of_gpa():
+        avg_list=[]
+        total_list=[]
+        for group in range(10):
+            total_sum = 0
+            for member in range(5):
+                total_sum += temp_list[group][member]['CGPA']
+            avg_list.append(total_sum / 5)
+            
+        return avg_list
+
 
 
     #this should be used to check the balance in the grouping
@@ -242,7 +257,7 @@ with open('records.csv', 'r') as records:
 # run everything 
 for individual_tutorial in tutorial_ordered_list: #can slice the ordered list here
 
-    sorted_individual_tutorial=merge_sort(individual_tutorial, key=cgpa_groups)
+    sorted_individual_tutorial=merge_sort(individual_tutorial, key=cgpa_groups) #sort each tut group by gpa
     sorted_individual_tutorial.sort(key=gender_groups) #then sort by gender
 
     #Algorithm to add all into their groups 
@@ -252,15 +267,37 @@ for individual_tutorial in tutorial_ordered_list: #can slice the ordered list he
         for person in range(5):
             temp_list[group].append(grouping_list[person][group]) 
 
-    rectify_school_imbalance()
+    rectify_school_imbalance() #maybe we add temp list as the arg to is function 
+    
     n = 1
     for Team in temp_list:
         for member in Team:
-            member['Team Number'] = n
+            member['Team Number'] = n #adds a new attribute for the dict
         n += 1
 
-    check_balance('School')
-    check_balance('CGPA')
+    #check_balance('School')
+    #check_balance('CGPA')
+    avg_list=get_list_of_gpa()
+
+    total_list.extend(avg_list)
+
+#DATA VISUALISATION
+x_axis=[i for i in range(1,1201)]
+y_axis=total_list
+std=statistics.stdev(total_list)
+mean=statistics.mean(total_list)
+plt.scatter(x_axis, y_axis)
+plt.hlines(mean,1,1200, color='red', linewidth=1, label='mean')
+plt.hlines(mean + std, 1, 1200, color='orange', label='mean + 1 Std', linewidth=2)
+plt.hlines(mean - std, 1, 1200, color='orange', label='mean - 1 Std', linewidth=2)
+plt.xlabel("Group numbers")
+plt.ylabel("CGPA")
+plt.title("Distribution of CGPA for all groups")
+plt.ylim(3.8, 4.5)
+plt.show()
+
+
+
 
 
             
