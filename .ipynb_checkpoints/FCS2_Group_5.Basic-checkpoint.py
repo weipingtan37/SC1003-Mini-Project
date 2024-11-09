@@ -24,23 +24,73 @@ with open('records.csv', 'r') as records:
     #Spliting the groups based on tutorial            
     tutorial_ordered_list = split_into_groups(STUDENTS_LIST, 50)
 
+    def merge_sort(list_to_sort, key= lambda x: x):
+        list_len=len(list_to_sort) #calc len of list
+
+
+        if list_len<=1:
+            return list_to_sort #return the list if its length is 1 or less
+   
+        left_half=merge_sort(list_to_sort[:list_len//2], key) #call mergesort on left half (will recurse down the left tree)
+        right_half=merge_sort(list_to_sort[list_len//2:], key) #call mergesort on right half (only when left tree is left with 1 element)
+
+
+        return merge(left_half, right_half, key) #calls merge func which returns a sorted list
+
+
+
+    def merge(left_list, right_list, key):
+        temp_list=[] #temp list that stores sorted items
+
+
+        while left_list and right_list: #while both arr are not empty
+            if key(left_list[0]) <= key(right_list[0]): # if key of the 1st element in left arr is less than that of right arr
+                temp_list.append(left_list[0]) #append to temp_list
+                left_list.pop(0) #remove this appended item
+            else:
+                temp_list.append(right_list[0])
+                right_list.pop(0)
+
+
+        if left_list: #if there is still elements in one of the arr, extend them to temp_list since the remaining elements are alr sorted
+            temp_list.extend(left_list)
+
+
+        if right_list:
+            temp_list.extend(right_list)
+
+
+        return temp_list #return the sorted list to merge_sort
+       
+    '''
+    def cgpa_groups(student):
+        return student["CGPA"]
+    sorted_individual_tutorial=merge_sort(tutorial_ordered_list[0], key=cgpa_groups)
+
+
+    def gender_groups(student):
+            return student["Gender"]
+    sorted_individual_tutorial.sort(key=gender_groups)
+    print(sorted_individual_tutorial)''' #i wanna see if the sort is correct
+
 
 
 
     '''       SORTING AND ADDING INTO GROUPS    '''
-    for individual_tutorial in tutorial_ordered_list: #can slice the ordered list here 
+    for individual_tutorial in tutorial_ordered_list: #can slice the ordered list here
         #sort by GPA first
         def cgpa_groups(student):
-                return student["CGPA"]
-        individual_tutorial.sort(key=cgpa_groups) 
-        
+            return student["CGPA"]
+        sorted_individual_tutorial=merge_sort(individual_tutorial, key=cgpa_groups)
+
+
         #Sort by gender next
         def gender_groups(student):
                 return student["Gender"]
-        individual_tutorial.sort(key=gender_groups) #then sort by gender
+        sorted_individual_tutorial.sort(key=gender_groups) #then sort by gender
 
         #Algorithm to add all into their groups 
-        grouping_list = split_into_groups(individual_tutorial, 10) #Split into 5 groups of 10
+        grouping_list = split_into_groups(sorted_individual_tutorial, 10) #Split into 5 groups of 10
         temp_list = [[], [], [], [], [], [], [], [], [], []]
         for group in range(10):
             for person in range(5):
@@ -167,9 +217,9 @@ with open('records.csv', 'r') as records:
         #testing out code   
         check_the_same_school()
         n = 1
-        for Group in temp_list:
-            for member in Group:
-                member['Group Number'] = n
+        for Team in temp_list:
+            for member in Team:
+                member['Team Number'] = n
             n += 1
         #check_balance('School')
         #check_balance('School')
@@ -200,9 +250,9 @@ with open('records.csv', 'r') as records:
         #     student['CGPA Group'] = cgpa_groups(student['CGPA'])
 
 with open('new.record.csv', 'w') as new_record:
-    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Group Number\n")
+    new_record.write("Tutorial Group,Student ID,School,Name,Gender,CGPA,Team Number\n")
     for individual_tutorial in tutorial_ordered_list:
         for individual_member in individual_tutorial:
-            new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Group Number']}\n")
+            new_record.write(f"{individual_member['Tutorial Group']},{individual_member['Student ID']},{individual_member['School']},{individual_member['Name']},{individual_member['Gender']},{individual_member['CGPA']},{individual_member['Team Number']}\n")
             
     
